@@ -42,6 +42,7 @@ public class SpringJDBCDemoApplication {
 		}
 		System.out.println("");
 		
+		
 		//ctx.close();
 		/*
 		teemu.setEmail("[private]");
@@ -70,11 +71,6 @@ public class SpringJDBCDemoApplication {
 		
 		/*
 		System.out.println("Delete all: ");
-		for (Player p : playerManager.findAll()) {
-			playerManager.delete(p);
-			System.out.println(p);
-		}
-		
 		for (User p : userManager.findAll()) {
 			userManager.delete(p);
 			System.out.println(p);

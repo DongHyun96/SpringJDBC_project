@@ -37,6 +37,17 @@ public class PlayerController {
 		return result;
 	}
 	
+	@PostMapping(value = "/getplayer", produces= "application/json", consumes = "application/json")
+	@ResponseBody
+	public Player getPlayerByName(@RequestBody NameRank nr) {
+		// Get player by user name. Only name has to be matched.
+		System.out.println("Received Name: " + nr.getUserName());
+		Player result = playerManager.findByPlayerName(nr.getUserName());
+		
+		// No player found -> return null
+		return result;
+	}
+	
 	@GetMapping(value = "/sorted", produces = "application/json" )
 	public List<NameRank> getSortedRank() {
 		System.out.println("Send sorted Rank List of Player");

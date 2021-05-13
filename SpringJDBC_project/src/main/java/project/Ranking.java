@@ -25,6 +25,7 @@ public class Ranking {
 		
 		List<NameRank> ranklist = new ArrayList<NameRank>();
 		int rank = 1;
+		
 		NameRank first = new NameRank();
 		first.setUserName(sorted.get(0).getUserName());
 		first.setRank(rank);

@@ -38,7 +38,7 @@ public class UserController {
 		User u = userManager.findByEmail(ep.getEmail());
 	
 		if (u == null) {  // When there is no such email, return null"
-			return u; 
+			return u;
 		}
 		else { // When email exists in DB
 			if (u.getPassword().equals(ep.getPassword())) {  // Email and password is valid! return valid user data
@@ -58,6 +58,17 @@ public class UserController {
 		return userManager.findAll();
 	}
 	
+	@PostMapping(value = "/getuser", produces= "application/json", consumes = "application/json")
+	@ResponseBody
+	public User getUserByEmail(@RequestBody EmailPassword ep) {
+		// Get User by Email, only email has to be matched.
+		System.out.println("Received Email: " + ep.getEmail());
+		User result = userManager.findByEmail(ep.getEmail());
+		
+		// If user is not exist..return null
+		return result;
+	}
+	
 	@PostMapping(value = "/updateuser", produces= "application/json", consumes = "application/json")
 	@ResponseBody
 	public int updateUser(@RequestBody User u) {
@@ -67,6 +78,11 @@ public class UserController {
 		return result;
 	}
 	
+	
+	/*
+	 *  Username / email 일치해야 함
+	 * 
+	 */
 	@PostMapping(value = "/deleteuser", produces= "application/json", consumes = "application/json")
 	@ResponseBody
 	public int deleteUser(@RequestBody User u) {
