@@ -71,26 +71,48 @@ public class UserController {
 	
 	@PostMapping(value = "/updateuser", produces= "application/json", consumes = "application/json")
 	@ResponseBody
-	public int updateUser(@RequestBody User u) {
-		// Only for changing password and userversion. Something goes wrong, then return 0
+	public User updateUser(@RequestBody User u) {
+		// Only for changing password and userversion. Something goes wrong, then return null User data
+		/*
+		 * When Update fails, then you get,
+		 * 
+		 * {
+    "id": 0,
+    "userName": null,
+    "email": null,
+    "password": null,
+    "userVersion": null}
+		 */
 		System.out.println("Received new user data: " + u.toString());
-		int result = userManager.update(u);
-		return result;
+		int flag = userManager.update(u);
+		
+		User returnUser = new User();
+		if (flag == 1) {
+			// Update succeed
+			returnUser = userManager.findByEmail(u.getEmail());
+		}
+		return returnUser;
 	}
 	
 	
 	/*
-	 *  Username / email 일치해야 함
+	 *  Username / email 일치해야 함 무조건! 지키기 -> 안그러면 DB가 꼬임
 	 * 
 	 */
 	@PostMapping(value = "/deleteuser", produces= "application/json", consumes = "application/json")
 	@ResponseBody
-	public int deleteUser(@RequestBody User u) {
-		// case1 - Email already in DB -> return JSON data with email="error"
-		// case2 - username already in DB -> return JSON data with username="error"
+	public User deleteUser(@RequestBody User u) {
 		System.out.println("Received deleting user data: " + u.toString());
-		int result = userManager.delete(u);
-		return result;
+		int flag = userManager.delete(u);
+		User returnUser = new User();
+		
+		if (flag == 1) {
+			// delete succeed
+			returnUser = u;
+		}
+		
+		// If deletion fails, return null
+		return returnUser;
 	}
 	
 }
