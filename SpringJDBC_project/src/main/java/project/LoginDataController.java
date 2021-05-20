@@ -95,6 +95,10 @@ public class LoginDataController {
 		
 		Flag f = new Flag();
 		
+		String encodedPassword = this.passwordEncoder.encode(data.getPassword());  // password encryption
+		
+		data.setPassword(encodedPassword);
+		
 		f.setFlag(lDataManager.update(data));
 		
 		return f;
