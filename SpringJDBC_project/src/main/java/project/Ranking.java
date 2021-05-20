@@ -8,19 +8,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import data.Player;
-import data.PlayerRepository;
-import data.NameRank;
+import data.UserData;
+import data.UserDataRepository;
+import jsonObj.NameRank;
 
 @Service
 public class Ranking {
 	
 	@Autowired
-	private PlayerRepository repo;
+	private UserDataRepository repo;
 	
 	// Maybe exception handling needed.
-	public List<NameRank> sortedPlayerList() {
-		List<Player> sorted = repo.findAll();
+	public List<NameRank> sortedUserList() {
+		List<UserData> sorted = repo.findAll();
 		Collections.sort(sorted);
 		
 		List<NameRank> ranklist = new ArrayList<NameRank>();
@@ -49,15 +49,15 @@ public class Ranking {
 		return ranklist;
 	}
 	
-	public NameRank getPlayerRank(Player p) {
-		List<NameRank> ranklist = sortedPlayerList();
+	public NameRank getUserRank(UserData data) {
+		List<NameRank> ranklist = sortedUserList();
 		
 		for (NameRank nr : ranklist) {
-			if (nr.getUserName().equals(p.getUserName()))
+			if (nr.getUserName().equals(data.getUserName()))
 				return nr;
 		}
 		// Can't find players
-		System.out.println("Player not found!");
+		System.out.println("User not found!");
 		return null;
 		
 	}

@@ -1,6 +1,6 @@
 package data;
 
-public class User {
+public class LoginData {
 	private long id;
 	private String userName;
 	private String email;
@@ -8,15 +8,15 @@ public class User {
 	private String userVersion;
 	
 	// Constructors
-	public User() {}
-	public User(long id, String userName, String email, String password, String userVersion) {
+	public LoginData() {}
+	public LoginData(long id, String userName, String email, String password, String userVersion) {
 		this.id = id;
 		this.userName = userName;
 		this.email = email;
 		this.password = password;
 		this.userVersion = userVersion;
 	}
-	public User(String userName, String email, String password, String userVersion) {
+	public LoginData(String userName, String email, String password, String userVersion) {
 		this.userName = userName;
 		this.email = email;
 		this.password = password;
@@ -55,7 +55,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [ id=" + id
+		return "LoginData [ id=" + id
 				+ ", userName=" + userName + ", email=" + email
 				+ ", password=" + password + ", userVersion=" + userVersion +"]";
 	}

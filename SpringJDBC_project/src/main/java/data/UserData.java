@@ -1,6 +1,6 @@
 package data;
 
-public class Player implements Comparable<Player>{
+public class UserData implements Comparable<UserData>{
 
 	private String userName;
 	private int score;
@@ -8,10 +8,10 @@ public class Player implements Comparable<Player>{
 	private String companion;
 
 
-	public Player() {
+	public UserData() {
 	}
 
-	public Player(String userName, int score, int coin, String companion) {
+	public UserData(String userName, int score, int coin, String companion) {
 		this.userName = userName;
 		this.score = score;
 		this.coin = coin;
@@ -52,13 +52,13 @@ public class Player implements Comparable<Player>{
 
 	@Override
 	public String toString() {
-		return "Player [ Name=" + userName
+		return "UserData [ Name=" + userName
 				+ ", score=" + score + ", coin=" + coin
 				+ ", companion=" + companion + "]";
 	}
 
 	@Override
-	public int compareTo(Player o) {
+	public int compareTo(UserData o) {
 		if (this.score < o.getScore()) 
 			return 1;
 		

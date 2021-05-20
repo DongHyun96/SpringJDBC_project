@@ -1,4 +1,4 @@
-package data;
+package jsonObj;
 
 /*
  * Class purpose : To handle JSON data

@@ -6,21 +6,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import data.Player;
-import data.PlayerRepository;
+import data.UserData;
+import data.UserDataRepository;
 
 // TODO: input validation in methods
 
 @Service
-public class PlayerManagerImpl implements PlayerManager {
+public class UserDataManagerImpl implements UserDataManager {
 
 	@Autowired
-	private PlayerRepository repo;
+	private UserDataRepository repo;
 
 	@Override
-	public Player insert(String username, int score, int coin, String companion) {
+	public UserData insert(String username, int score, int coin, String companion) {
 		try {
-		Player player = repo.save(new Player(username, score, coin, companion));
+		UserData player = repo.save(new UserData(username, score, coin, companion));
 		return player;
 		} catch (Exception e) { 
 			// When username(primary key) is duplicated. 
@@ -30,14 +30,14 @@ public class PlayerManagerImpl implements PlayerManager {
 	}
 
 	@Override
-	public Player findOne(String userName) {
+	public UserData findOne(String userName) {
 		return repo.findOne(userName);
 	}
 	
 	// a custom service method that uses findAll()
 	@Override
-	public Player findByPlayerName(String name) {
-		for (Player p : findAll()) {
+	public UserData findByPlayerName(String name) {
+		for (UserData p : findAll()) {
 			if (p.getUserName().equalsIgnoreCase(name)) {
 				return p;
 			}
@@ -47,20 +47,20 @@ public class PlayerManagerImpl implements PlayerManager {
 	}
 
 	@Override
-	public List<Player> findAll() {
+	public List<UserData> findAll() {
 		return repo.findAll();
 	}
 
 	
 	@Override
-	public int update(Player p) {
+	public int update(UserData data) {
 		// Update score, coin, companion
-		return repo.update(p);
+		return repo.update(data);
 	}
 
 	@Override
-	public int delete(Player p) {
-		return repo.delete(p);
+	public int delete(UserData data) {
+		return repo.delete(data);
 	}
 
 

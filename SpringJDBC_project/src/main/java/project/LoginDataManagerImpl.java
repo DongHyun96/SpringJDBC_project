@@ -7,26 +7,26 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
-import data.Player;
-import data.PlayerRepository;
-import data.User;
-import data.UserRepository;
+import data.UserData;
+import data.UserDataRepository;
+import data.LoginData;
+import data.LoginDataRepository;
 
 @Service
-public class UserManagerImpl implements UserManager {
+public class LoginDataManagerImpl implements LoginDataManager {
 
 	@Autowired
-	private UserRepository repo;
+	private LoginDataRepository repo;
 
 	@Autowired
-	private PlayerRepository repoPlayer;
+	private UserDataRepository repoPlayer;
 	
 	/**
 	 * When inserting new user, player data is inserted too, based on the user name.
 	 */
 	@Override
-	public User insert(String username, String email, String password, String userVersion) {
-		User user = new User(username, email, password, userVersion);
+	public LoginData insert(String username, String email, String password, String userVersion) {
+		LoginData user = new LoginData(username, email, password, userVersion);
 		
 		if (findByEmail(email) == null) {
 			// When Email is not duplicated.
@@ -35,7 +35,7 @@ public class UserManagerImpl implements UserManager {
 				// When Email and username is not duplicated.
 				
 				user = repo.save(user);
-				repoPlayer.save(new Player(username, 0, 0, "default"));
+				repoPlayer.save(new UserData(username, 0, 0, "default"));
 				return user;
 			}
 			System.out.println("From userManager: username duplicated! insert fails...");
@@ -48,14 +48,14 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public User findOne(long id) {
+	public LoginData findOne(long id) {
 		return repo.findOne(id);
 	}
 	
 	// a custom service method that uses findAll()
 	@Override
-	public User findByEmail(String email) {
-		for (User u : findAll()) {
+	public LoginData findByEmail(String email) {
+		for (LoginData u : findAll()) {
 			if (u.getEmail().equalsIgnoreCase(email)) {
 				return u;
 			}
@@ -65,8 +65,8 @@ public class UserManagerImpl implements UserManager {
 	}
 	
 	@Override
-	public User findByUserName(String name) {
-		for (User u : findAll()) {
+	public LoginData findByUserName(String name) {
+		for (LoginData u : findAll()) {
 			if (u.getUserName().equalsIgnoreCase(name)) {
 				return u;
 			}
@@ -76,25 +76,25 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public List<User> findAll() {
+	public List<LoginData> findAll() {
 		return repo.findAll();
 	}
 
 	
 	@Override
-	public int update(User u) {
+	public int update(LoginData data) {
 		// Only password and userVersion can be update.
-		return repo.update(u);
+		return repo.update(data);
 	}
 
 	@Override
-	public int delete(User u) {
+	public int delete(LoginData data) {
 		// Also delete player data. If delete fails, return 0 / 1 on vise versa
 		
-		int result = repo.delete(u);
+		int result = repo.delete(data);
 		
 		if (result == 1) {
-			Player p = repoPlayer.findOne(u.getUserName());
+			UserData p = repoPlayer.findOne(data.getUserName());
 			return repoPlayer.delete(p);
 		}
 		else {
