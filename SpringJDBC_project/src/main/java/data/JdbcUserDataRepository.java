@@ -21,11 +21,11 @@ public class JdbcUserDataRepository implements UserDataRepository {
 
 	private JdbcOperations jdbc;
 
-	private static final String SQL_INSERT = "insert into player (username, score, coin, companion) values (?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "update player set score=?, coin=?, companion=? where username=?";
-	private static final String SQL_FIND_ONE = "select * from player where username = ?";
-	private static final String SQL_FIND_ALL = "select * from player order by username";
-	private static final String SQL_DELETE_ONE = "delete from player where username = ?";
+	private static final String SQL_INSERT = "insert into user_table (username, score, coin, knight) values (?, ?, ?, ?)";
+	private static final String SQL_UPDATE = "update user_table set score=?, coin=?, knight=? where username=?";
+	private static final String SQL_FIND_ONE = "select * from user_table where username = ?";
+	private static final String SQL_FIND_ALL = "select * from user_table order by username";
+	private static final String SQL_DELETE_ONE = "delete from user_table where username = ?";
 	
 	@Autowired
 	public JdbcUserDataRepository(JdbcOperations jdbc) {
@@ -34,7 +34,12 @@ public class JdbcUserDataRepository implements UserDataRepository {
 	
 	@Override
 	public UserData findOne(String username) {
+		try {
 		return jdbc.queryForObject(SQL_FIND_ONE, new UserRowMapper(), username);
+		}
+		catch (Exception e){
+			return null; // If userdata doesn't exist, then return null
+		}
 	}
 
 	@Override
@@ -51,7 +56,7 @@ public class JdbcUserDataRepository implements UserDataRepository {
 				ps.setString(1, u.getUserName());
 				ps.setInt(2, u.getScore());
 				ps.setInt(3, u.getCoin());
-				ps.setString(4, u.getCompanion());
+				ps.setString(4, u.getKnight());
 				return ps;
 			}
 		}, keyHolder);
@@ -71,7 +76,7 @@ public class JdbcUserDataRepository implements UserDataRepository {
 	
 	@Override
 	public int update(UserData u) {
-		return jdbc.update(SQL_UPDATE, u.getScore(), u.getCoin(), u.getCompanion(),
+		return jdbc.update(SQL_UPDATE, u.getScore(), u.getCoin(), u.getKnight(),
 				u.getUserName());
 	}
 
@@ -84,7 +89,7 @@ public class JdbcUserDataRepository implements UserDataRepository {
 	private static class UserRowMapper implements RowMapper<UserData> {
 		public UserData mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new UserData(rs.getString("username"), rs.getInt("score"), rs.getInt("coin"),
-					rs.getString("companion"));
+					rs.getString("knight"));
 		}
 	}
 }

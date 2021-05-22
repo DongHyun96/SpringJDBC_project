@@ -5,11 +5,11 @@ import java.util.List;
 import data.UserData;
 
 public interface UserDataManager {
-	UserData insert(String username, int score, int coin, String companion);
+	UserData insert(String username, int score, int coin, String knight);
 
 	UserData findOne(String userName);
 	
-	UserData findByPlayerName(String name);
+	UserData findByUserName(String name);
 
 	List<UserData> findAll();
 

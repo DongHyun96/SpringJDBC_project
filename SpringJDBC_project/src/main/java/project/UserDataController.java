@@ -23,34 +23,35 @@ public class UserDataController {
 	@Autowired
 	private Ranking ranking;
 	
-	@GetMapping(value = "/getallplayer", produces = "application/json" )
-	public List<UserData> getAllPlayer() {
+	@GetMapping(value = "/getall/user", produces = "application/json" )
+	public List<UserData> getAllUser() {
 		System.out.println("Send all player");
 		return uDataManager.findAll();
 	}
 	
-	@PostMapping(value = "/updateplayer", produces= "application/json", consumes = "application/json")
+	@PostMapping(value = "/get/user", produces= "application/json", consumes = "application/json")
 	@ResponseBody
-	public Flag updatePlayer(@RequestBody UserData p) {
-		// Can update score, coin, companion
-		System.out.println("Received new player data: " + p.toString());
-		
-		Flag f = new Flag();
-		
-		f.setFlag(uDataManager.update(p));
-		
-		return f;
-	}
-	
-	@PostMapping(value = "/getplayer", produces= "application/json", consumes = "application/json")
-	@ResponseBody
-	public UserData getPlayerByName(@RequestBody NameRank nr) {
+	public UserData getUserByName(@RequestBody NameRank nr) {
 		// Get player by user name. Only name has to be matched.
+		
 		System.out.println("Received Name: " + nr.getUserName());
-		UserData result = uDataManager.findByPlayerName(nr.getUserName());
+		UserData result = uDataManager.findByUserName(nr.getUserName());
 		
 		// No player found -> return null
 		return result;
+	}
+	
+	@PostMapping(value = "/update/user", produces= "application/json", consumes = "application/json")
+	@ResponseBody
+	public Flag updateUser(@RequestBody UserData u) {
+		// Can update score, coin, companion
+		System.out.println("Received new player data: " + u.toString());
+		
+		Flag f = new Flag();
+		
+		f.setFlag(uDataManager.update(u));
+		
+		return f;
 	}
 	
 	@GetMapping(value = "/sorted", produces = "application/json" )
@@ -61,9 +62,9 @@ public class UserDataController {
 	
 	@PostMapping(value = "/getrankscore", produces= "application/json", consumes = "application/json")
 	@ResponseBody
-	public NameRank getPlayerRank(@RequestBody UserData p) {
-		System.out.println("Get " + p.getUserName() + "'s rank.");
-		NameRank result = ranking.getUserRank(p);
+	public NameRank getUserRank(@RequestBody UserData u) {
+		System.out.println("Get " + u.getUserName() + "'s rank.");
+		NameRank result = ranking.getUserRank(u);
 		return result;
 	}
 

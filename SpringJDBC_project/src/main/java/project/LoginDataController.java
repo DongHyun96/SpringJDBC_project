@@ -29,7 +29,7 @@ public class LoginDataController {
 	public LoginData signUpUser(@RequestBody LoginData data) {
 		// case1 - Email already in DB -> return JSON data with email="error"
 		// case2 - username already in DB -> return JSON data with username="error"
-		System.out.println("Received a person: " + data.getUserName());
+		System.out.println("Received a signup request: " + data.getUserName());
 		
 		String encodedPassword = this.passwordEncoder.encode(data.getPassword());  // password encryption
 		
@@ -69,26 +69,26 @@ public class LoginDataController {
 		}
 	}
 	
-	@GetMapping(value = "/getalluser", produces = "application/json" )
-	public List<LoginData> getAllUser() {
+	@GetMapping(value = "/getall/logindata", produces = "application/json" )
+	public List<LoginData> getAllLoginD() {
 		System.out.println("Send all user");
 		return lDataManager.findAll();
 	}
 	
-	@PostMapping(value = "/getuser", produces= "application/json", consumes = "application/json")
+	@PostMapping(value = "/get/logindata", produces= "application/json", consumes = "application/json")
 	@ResponseBody
-	public LoginData getUserByEmail(@RequestBody EmailPassword ep) {
-		// Get User by Email, only email has to be matched.
+	public LoginData getLoginDataByEmail(@RequestBody EmailPassword ep) {
+		// Get Login data by Email, only email has to be matched.
 		System.out.println("Received Email: " + ep.getEmail());
 		LoginData result = lDataManager.findByEmail(ep.getEmail());
 		
-		// If user is not exist..return null
+		// If loginD is not exist..return null
 		return result;
 	}
 	
-	@PostMapping(value = "/updateuser", produces= "application/json", consumes = "application/json")
+	@PostMapping(value = "/update/logindata", produces= "application/json", consumes = "application/json")
 	@ResponseBody
-	public Flag updateUser(@RequestBody LoginData data) {
+	public Flag updateLoginD(@RequestBody LoginData data) {
 		// Only for changing password and userversion. Something goes wrong, then return flag = 0
 	
 		System.out.println("Received new user data: " + data.toString());
@@ -105,20 +105,29 @@ public class LoginDataController {
 	}
 	
 	
-	/*
-	 *  Username / email 일치해야 함 무조건! 지키기 -> 안그러면 DB가 꼬임
-	 * 
-	 */
-	@PostMapping(value = "/deleteuser", produces= "application/json", consumes = "application/json")
+	@PostMapping(value = "/delete", produces= "application/json", consumes = "application/json")
 	@ResponseBody
 	public Flag deleteUser(@RequestBody LoginData data) {
+		// Delete Login data and also delete user data too.
+		// Given password must have to be matched.
 		System.out.println("Received deleting user data: " + data.toString());
 		
-		//int flag = userManager.delete(data);
-		
 		Flag f = new Flag();
-		f.setFlag(lDataManager.delete(data));
-		return f;
+		LoginData lData = lDataManager.findByEmail(data.getEmail());
+		
+		// Check if the password is matched
+		Boolean isPasswordMatch = this.passwordEncoder.matches(data.getPassword(), lData.getPassword()); 
+		
+		// If the password doesn't match, return flag with number 2
+		if (!isPasswordMatch) {
+			f.setFlag(2);
+			return f;
+		}
+		else {
+			f.setFlag(lDataManager.delete(data)); // If deletion succeed, then return 1, otherwise return 0
+			
+			return f;
+		}		
 	}
 	
 }

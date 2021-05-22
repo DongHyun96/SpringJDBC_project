@@ -13,6 +13,7 @@ import jsonObj.NameRank;
 
 @SpringBootApplication(exclude=SecurityAutoConfiguration.class ,scanBasePackages={"data", "project"})  // Some package problem
 public class SpringJDBCDemoApplication {
+	
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(SpringJDBCDemoApplication.class, args);
@@ -35,6 +36,13 @@ public class SpringJDBCDemoApplication {
 		}
 		System.out.println("");
 		
+		/*
+		System.out.println("Find one user: ");
+		UserData user = playerManager.findOne("4");
+		System.out.println("Found user: " + user);
+		
+		System.out.println("");
+		*/
 		
 		System.out.println("Sorted players by score: ");
 		for (NameRank u : ranking.sortedUserList()) {

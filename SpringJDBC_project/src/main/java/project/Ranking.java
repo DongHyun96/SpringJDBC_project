@@ -56,7 +56,7 @@ public class Ranking {
 			if (nr.getUserName().equals(data.getUserName()))
 				return nr;
 		}
-		// Can't find players
+		// Can't find user
 		System.out.println("User not found!");
 		return null;
 		

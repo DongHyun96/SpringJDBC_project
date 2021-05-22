@@ -19,11 +19,11 @@ public class JdbcLoginDataRepository implements LoginDataRepository {
 
 	private JdbcOperations jdbc;
 
-	private static final String SQL_INSERT = "insert into user (username, email, password, userVersion) values (?, ?, ?, ?)";
-	private static final String SQL_UPDATE = "update user set password=?, userVersion=? where email=?";
-	private static final String SQL_FIND_ONE = "select * from user where id = ?";
-	private static final String SQL_FIND_ALL = "select * from user order by username";
-	private static final String SQL_DELETE_ONE = "delete from user where email = ?";
+	private static final String SQL_INSERT = "insert into login_table (username, email, password, userversion) values (?, ?, ?, ?)";
+	private static final String SQL_UPDATE = "update login_table set password=?, userversion=? where email=?";
+	private static final String SQL_FIND_ONE = "select * from login_table where id = ?";
+	private static final String SQL_FIND_ALL = "select * from login_table order by username";
+	private static final String SQL_DELETE_ONE = "delete from login_table where email = ?";
 	
 	@Autowired
 	public JdbcLoginDataRepository(JdbcOperations jdbc) {
@@ -32,7 +32,13 @@ public class JdbcLoginDataRepository implements LoginDataRepository {
 	
 	@Override
 	public LoginData findOne(long id) {
+		try {
 		return jdbc.queryForObject(SQL_FIND_ONE, new DataRowMapper(), id);
+		}
+		catch (Exception e) {
+			// When there is no such id
+			return null;
+		}
 	}
 
 	@Override

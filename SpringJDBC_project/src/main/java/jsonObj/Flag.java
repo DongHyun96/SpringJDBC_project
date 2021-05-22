@@ -1,5 +1,11 @@
 package jsonObj;
 
+
+/*
+ * Flag 1 -> Everything's okay
+ * Flag 0 -> Failure
+ * Others -> etc
+ */
 public class Flag {
 	private int flag;
 

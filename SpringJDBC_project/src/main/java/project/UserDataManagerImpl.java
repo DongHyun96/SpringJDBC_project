@@ -18,13 +18,13 @@ public class UserDataManagerImpl implements UserDataManager {
 	private UserDataRepository repo;
 
 	@Override
-	public UserData insert(String username, int score, int coin, String companion) {
+	public UserData insert(String username, int score, int coin, String knight) {
 		try {
-		UserData player = repo.save(new UserData(username, score, coin, companion));
-		return player;
+		UserData user = repo.save(new UserData(username, score, coin, knight));
+		return user;
 		} catch (Exception e) { 
 			// When username(primary key) is duplicated. 
-			System.out.println("From PlayerManagerImpl: Insertion fails due to duplicated username");
+			System.out.println("From UserDataManagerImpl: Insertion fails due to duplicated username");
 			return null;
 		}
 	}
@@ -36,10 +36,10 @@ public class UserDataManagerImpl implements UserDataManager {
 	
 	// a custom service method that uses findAll()
 	@Override
-	public UserData findByPlayerName(String name) {
-		for (UserData p : findAll()) {
-			if (p.getUserName().equalsIgnoreCase(name)) {
-				return p;
+	public UserData findByUserName(String name) {
+		for (UserData u : findAll()) {
+			if (u.getUserName().equals(name)) {  // initial -> u.getUserName().equalsIgnoreCase(name)
+				return u;
 			}
 		}
 		// No Player found...
@@ -54,7 +54,7 @@ public class UserDataManagerImpl implements UserDataManager {
 	
 	@Override
 	public int update(UserData data) {
-		// Update score, coin, companion
+		// Update score, coin, knight
 		return repo.update(data);
 	}
 

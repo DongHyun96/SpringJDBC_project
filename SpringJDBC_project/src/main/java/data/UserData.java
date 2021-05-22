@@ -5,17 +5,17 @@ public class UserData implements Comparable<UserData>{
 	private String userName;
 	private int score;
 	private int coin;
-	private String companion;
+	private String knight;
 
 
 	public UserData() {
 	}
 
-	public UserData(String userName, int score, int coin, String companion) {
+	public UserData(String userName, int score, int coin, String knight) {
 		this.userName = userName;
 		this.score = score;
 		this.coin = coin;
-		this.companion = companion;
+		this.knight = knight;
 	}
 	
 	public String getUserName() {
@@ -42,19 +42,19 @@ public class UserData implements Comparable<UserData>{
 		this.coin = coin;
 	}
 
-	public String getCompanion() {
-		return companion;
+	public String getKnight() {
+		return knight;
 	}
 
-	public void setCompanion(String companion) {
-		this.companion = companion;
+	public void setKnight(String knight) {
+		this.knight = knight;
 	}
 
 	@Override
 	public String toString() {
 		return "UserData [ Name=" + userName
 				+ ", score=" + score + ", coin=" + coin
-				+ ", companion=" + companion + "]";
+				+ ", knight=" + knight + "]";
 	}
 
 	@Override
