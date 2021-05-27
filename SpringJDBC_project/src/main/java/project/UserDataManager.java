@@ -6,8 +6,6 @@ import data.UserData;
 
 public interface UserDataManager {
 	UserData insert(String username, int score, int coin, String knight);
-
-	UserData findOne(String userName);
 	
 	UserData findByUserName(String name);
 

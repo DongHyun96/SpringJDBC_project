@@ -29,21 +29,11 @@ public class UserDataManagerImpl implements UserDataManager {
 		}
 	}
 
-	@Override
-	public UserData findOne(String userName) {
-		return repo.findOne(userName);
-	}
 	
 	// a custom service method that uses findAll()
 	@Override
 	public UserData findByUserName(String name) {
-		for (UserData u : findAll()) {
-			if (u.getUserName().equals(name)) {  // initial -> u.getUserName().equalsIgnoreCase(name)
-				return u;
-			}
-		}
-		// No Player found...
-		return null;
+		return repo.findOne(name);  // Return null if no user found.
 	}
 
 	@Override
