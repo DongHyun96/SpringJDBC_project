@@ -1,4 +1,4 @@
-package data;
+package jsonObj;
 
 public class LoginData {
 	private long id;

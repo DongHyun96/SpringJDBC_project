@@ -2,6 +2,8 @@ package data;
 
 import java.util.List;
 
+import jsonObj.UserData;
+
 public interface UserDataRepository {
 	//CRUD ( create, read, update, delete )
 

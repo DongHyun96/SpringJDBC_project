@@ -8,9 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import data.UserData;
 import data.UserDataRepository;
 import jsonObj.NameRank;
+import jsonObj.UserData;
 
 @Service
 public class Ranking {

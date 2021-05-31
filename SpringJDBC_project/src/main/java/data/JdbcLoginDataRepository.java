@@ -14,6 +14,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import jsonObj.LoginData;
+
 @Repository
 public class JdbcLoginDataRepository implements LoginDataRepository {
 

@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import data.UserData;
 import data.UserDataRepository;
+import jsonObj.UserData;
 
 // TODO: input validation in methods
 
@@ -18,10 +18,10 @@ public class UserDataManagerImpl implements UserDataManager {
 	private UserDataRepository repo;
 
 	@Override
-	public UserData insert(String username, int score, int coin, String knight) {
+	public UserData insert(UserData u) {
 		try {
-		UserData user = repo.save(new UserData(username, score, coin, knight));
-		return user;
+		UserData result = repo.save(u);
+		return result;
 		} catch (Exception e) { 
 			// When username(primary key) is duplicated. 
 			System.out.println("From UserDataManagerImpl: Insertion fails due to duplicated username");
@@ -29,8 +29,6 @@ public class UserDataManagerImpl implements UserDataManager {
 		}
 	}
 
-	
-	// a custom service method that uses findAll()
 	@Override
 	public UserData findByUserName(String name) {
 		return repo.findOne(name);  // Return null if no user found.
@@ -45,6 +43,13 @@ public class UserDataManagerImpl implements UserDataManager {
 	@Override
 	public int update(UserData data) {
 		// Update score, coin, knight
+		
+		if (findByUserName(data.getUserName()) == null) {
+			return 0;
+		}
+		if (data.getCoin() < 0) {
+			return 0;
+		}
 		return repo.update(data);
 	}
 

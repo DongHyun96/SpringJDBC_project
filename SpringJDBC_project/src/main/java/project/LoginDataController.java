@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import data.LoginData;
 import jsonObj.EmailPassword;
 import jsonObj.Flag;
+import jsonObj.LoginData;
 
 @RestController
 public class LoginDataController {
@@ -35,7 +35,7 @@ public class LoginDataController {
 		
 		data.setPassword(encodedPassword);
 		
-		LoginData result = lDataManager.insert(data.getUserName(), data.getEmail(), data.getPassword(), data.getUserVersion());
+		LoginData result = lDataManager.insert(data);
 		
 		return result;
 		
@@ -115,17 +115,24 @@ public class LoginDataController {
 		Flag f = new Flag();
 		LoginData lData = lDataManager.findByEmail(data.getEmail());
 		
+		if (lData == null) {
+			// When Email is wrong
+			f.setFlag(0);
+			return f;
+		}
+		
 		// Check if the password is matched
 		Boolean isPasswordMatch = this.passwordEncoder.matches(data.getPassword(), lData.getPassword()); 
 		
-		// If the password doesn't match, return flag with number 2
-		if (!isPasswordMatch) {
-			f.setFlag(2);
+		if (isPasswordMatch) {
+			// When password is matched
+			f.setFlag(lDataManager.delete(data)); // If deletion succeed, then return 1, otherwise return 0
+
 			return f;
 		}
 		else {
-			f.setFlag(lDataManager.delete(data)); // If deletion succeed, then return 1, otherwise return 0
-			
+			// When password doesn't match
+			f.setFlag(2);
 			return f;
 		}		
 	}

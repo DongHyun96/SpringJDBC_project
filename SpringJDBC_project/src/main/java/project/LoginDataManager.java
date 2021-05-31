@@ -2,10 +2,10 @@ package project;
 
 import java.util.List;
 
-import data.LoginData;
+import jsonObj.LoginData;
 
 public interface LoginDataManager {
-	LoginData insert(String username, String email, String password, String userVersion);
+	LoginData insert(LoginData ld);
 
 	LoginData findOne(long id);
 	

@@ -7,11 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import data.UserData;
-import data.LoginData;
+import jsonObj.LoginData;
 import jsonObj.NameRank;
+import jsonObj.UserData;
 
-@SpringBootApplication(exclude=SecurityAutoConfiguration.class ,scanBasePackages={"data", "project"})  // Some package problem
+@SpringBootApplication(exclude=SecurityAutoConfiguration.class ,scanBasePackages={"data", "project"})
 public class SpringJDBCDemoApplication {
 	
 
@@ -53,11 +53,16 @@ public class SpringJDBCDemoApplication {
 		/*
 		System.out.println("Delete all: ");
 		for (LoginData d : userManager.findAll()) {
-			userManager.delete(d);
-			System.out.println(d);
+			if (d.getUserName().equals("10") || d.getUserName().equals("user10") || d.getUserName().equals("3")) {
+				continue;
+			}
+			else {
+				userManager.delete(d);
+				System.out.println(d);
+			}
 		}
 		*/
-		
+	
 		// close the context
 		//ctx.close();
 

@@ -7,9 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
-import data.UserData;
 import data.UserDataRepository;
-import data.LoginData;
+import jsonObj.CompanionData;
+import jsonObj.LoginData;
+import jsonObj.UserData;
+import data.CompDataRepository;
 import data.LoginDataRepository;
 
 @Service
@@ -21,30 +23,33 @@ public class LoginDataManagerImpl implements LoginDataManager {
 	@Autowired
 	private UserDataRepository uRepo;
 	
+	@Autowired
+	private CompDataRepository cRepo;
+	
 	/**
 	 * When inserting new loginData, UserData is inserted too, based on the user name.
 	 */
 	@Override
-	public LoginData insert(String username, String email, String password, String userVersion) {
-		LoginData data = new LoginData(username, email, password, userVersion);
+	public LoginData insert(LoginData ld) {
 		
-		if (findByEmail(email) == null) {
+		if (findByEmail(ld.getEmail()) == null) {
 			// When Email is not duplicated.
 			
-			if (findByUserName(username) == null) {
+			if (findByUserName(ld.getUserName()) == null) {
 				// When Email and username is not duplicated.
 				
-				data = lRepo.save(data);
-				uRepo.save(new UserData(username, 0, 0, "default"));
-				return data;
+				ld = lRepo.save(ld);
+				uRepo.save(new UserData(ld.getUserName(), 0, 0, "knight"));
+				cRepo.save(new CompanionData(ld.getUserName(), true, false, false));
+				return ld;
 			}
 			System.out.println("From loginManager: username duplicated! insert fails...");
-			data.setUserName("error");
-			return data;
+			ld.setUserName("error");
+			return ld;
 		}
 		System.out.println("From loginManager: Email duplicated! insert fails...");
-		data.setEmail("error");
-		return data;
+		ld.setEmail("error");
+		return ld;
 	}
 
 	@Override
@@ -92,19 +97,21 @@ public class LoginDataManagerImpl implements LoginDataManager {
 		
 		UserData u = uRepo.findOne(data.getUserName());
 		
-		if (u == null) {
-			// When userName doesn't exist in user_table
-			return 0; 
+		if (u == null || !u.getUserName().equals(data.getUserName())) {
+			// When userName doesn't exist in user_table, or name doesn't match with each DB table
+			return 0;
 		}
 		else {
 			int flag = lRepo.delete(data); // Flag stores interim result
 		
-			if (flag == 1) { // When LoginData deleted successfully, then delete userData as well.
-				return uRepo.delete(u);
+			if (flag == 1) { // When LoginData deleted successfully, then delete userData and companionData as well.
+				cRepo.delete(cRepo.findOne(data.getUserName()));
+				uRepo.delete(u);
+				return 1;
 			}
 			
 			return 0;
 		}
 	}
-
+	
 }

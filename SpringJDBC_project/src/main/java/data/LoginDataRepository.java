@@ -2,6 +2,8 @@ package data;
 
 import java.util.List;
 
+import jsonObj.LoginData;
+
 public interface LoginDataRepository {
 	//CRUD ( create, read, update, delete )
 

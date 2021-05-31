@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import data.UserData;
 import jsonObj.Flag;
 import jsonObj.NameRank;
+import jsonObj.UserData;
 
 @RestController
 public class UserDataController {
@@ -34,7 +34,7 @@ public class UserDataController {
 	public UserData getUserByName(@RequestBody NameRank nr) {
 		// Get player by user name. Only name has to be matched.
 		
-		System.out.println("Received Name: " + nr.getUserName());
+		System.out.println("(getUserByName)Received Name: " + nr.getUserName());
 		UserData result = uDataManager.findByUserName(nr.getUserName());
 		
 		// No player found -> return null

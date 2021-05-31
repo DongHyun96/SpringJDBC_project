@@ -1,4 +1,4 @@
-package data;
+package jsonObj;
 
 public class UserData implements Comparable<UserData>{
 

@@ -2,10 +2,10 @@ package project;
 
 import java.util.List;
 
-import data.UserData;
+import jsonObj.UserData;
 
 public interface UserDataManager {
-	UserData insert(String username, int score, int coin, String knight);
+	UserData insert(UserData u);
 	
 	UserData findByUserName(String name);
 
