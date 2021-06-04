@@ -1,5 +1,7 @@
 package project;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,10 @@ public class CompDataManagerImpl implements CompDataManager {
 	@Override
 	public CompanionData insert(CompanionData cd) {
 		try {
+			if (findOne(cd.getUserName(), cd.getCompanion()) != null) {
+				System.out.println("From ComDatManager: Insertion fails");
+				return null;
+			}
 			CompanionData result = repo.save(cd);
 			return result;
 		}
@@ -23,23 +29,33 @@ public class CompDataManagerImpl implements CompDataManager {
 			return null;
 		}
 	}
-
+	
 	@Override
-	public CompanionData findByUserName(String name) {
-		return repo.findOne(name); // Return null if no Comp found.
+	public CompanionData findOne(String name, String comp) {
+		return repo.findOne(name, comp); // Return null if no Comp found.
 	}
-
+	
+	@Override
+	public List<CompanionData> findByName(String name) {
+		return repo.findByName(name);
+	}
+	
 	@Override
 	public int update(CompanionData data) {
-		if (findByUserName(data.getUserName()) == null) {
+		if (findOne(data.getUserName(), data.getCompanion()) == null) {
 			return 0;
 		}
 		return repo.update(data);
 	}
 
 	@Override
-	public int delete(CompanionData data) {
-		return repo.delete(data);
+	public int deleteOne(String name, String comp) {
+		return repo.deleteOne(name, comp);
+	}
+	
+	@Override
+	public int deleteByName(String name) {
+		return repo.deleteByName(name);
 	}
 
 }

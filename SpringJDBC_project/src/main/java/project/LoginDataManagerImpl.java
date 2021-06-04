@@ -40,7 +40,7 @@ public class LoginDataManagerImpl implements LoginDataManager {
 				
 				ld = lRepo.save(ld);
 				uRepo.save(new UserData(ld.getUserName(), 0, 0, "knight"));
-				cRepo.save(new CompanionData(ld.getUserName(), true, false, false));
+				cRepo.save(new CompanionData(ld.getUserName(), "knight"));
 				return ld;
 			}
 			System.out.println("From loginManager: username duplicated! insert fails...");
@@ -105,7 +105,7 @@ public class LoginDataManagerImpl implements LoginDataManager {
 			int flag = lRepo.delete(data); // Flag stores interim result
 		
 			if (flag == 1) { // When LoginData deleted successfully, then delete userData and companionData as well.
-				cRepo.delete(cRepo.findOne(data.getUserName()));
+				cRepo.deleteByName(data.getUserName());
 				uRepo.delete(u);
 				return 1;
 			}
